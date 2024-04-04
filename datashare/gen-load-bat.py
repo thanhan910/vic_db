@@ -1,7 +1,6 @@
-import psycopg2
-import subprocess
+# Generate data loading bat file for loading data to postgres database
+
 import os
-import json
 import logging
 import sys
 
@@ -83,7 +82,7 @@ if __name__ == '__main__':
     for (schema_name, table_name, filepath, shp_column_names) in TABLES:
         log_path = os.path.abspath(os.path.join(LOG_DIR, f'{schema_name}.{table_name}.log'))
         BAT_COMMANDS.append(f'echo Loading {schema_name}.{table_name} >> "{log_path}"')
-        BAT_COMMANDS.append(f'shp2pgsql -s 7844 "{filepath}" "{schema_name}.{table_name}" | psql -d vic_db -U postgres -h localhost -p 5432 >> "{log_path}"')
+        BAT_COMMANDS.append(f'shp2pgsql -S -s 7844 "{filepath}" "{schema_name}.{table_name}" | psql -d vic_db -U postgres -h localhost -p 5432 >> "{log_path}"')
         BAT_COMMANDS.append(f'echo Finished loading {schema_name}.{table_name}')
         BAT_COMMANDS.append(f'echo Finished loading {schema_name}.{table_name} >> "{log_path}"')
 
