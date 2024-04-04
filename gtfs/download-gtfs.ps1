@@ -82,7 +82,7 @@ if ($db) {
 
     # The sql file is in the ../sql folder, relative to this script
 
-    psql -U postgres -d vic_db -f "$script_folder\sql\gtfs.sql"
+    psql -U postgres -d vic_db -f "create-gtfs.sql"
     
     # Print the file path of all extracted txt files
     $gtfs_folders = Get-ChildItem -Path "$download_folder\gtfs" -Directory
