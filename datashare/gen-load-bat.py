@@ -74,8 +74,8 @@ if __name__ == '__main__':
     
     BAT_COMMANDS = []
     BAT_COMMANDS.append('set PGPASSWORD=postgres')
-    BAT_COMMANDS.append('psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE vic_db OWNER postgres ENCODING \'UTF8\' CONNECTION LIMIT -1"')
-    BAT_COMMANDS.append('psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE EXTENSION IF NOT EXISTS postgis"')
+    # BAT_COMMANDS.append('psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE vic_db OWNER postgres ENCODING \'UTF8\' CONNECTION LIMIT -1"')
+    # BAT_COMMANDS.append('psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE EXTENSION IF NOT EXISTS postgis"')
     for schema_name in SCHEMAS:
         BAT_COMMANDS.append(f'psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE SCHEMA IF NOT EXISTS {schema_name}"')
 
