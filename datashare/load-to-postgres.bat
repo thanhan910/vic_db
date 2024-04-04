@@ -1,110 +1,112 @@
 set PGPASSWORD=postgres
+psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE vic_db OWNER postgres ENCODING 'UTF8' CONNECTION LIMIT -1"
+psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE EXTENSION IF NOT EXISTS postgis"
 psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE SCHEMA IF NOT EXISTS ptv"
 psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE SCHEMA IF NOT EXISTS vmadd"
 psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE SCHEMA IF NOT EXISTS vmprop"
 psql -U postgres -h localhost -p 5432 -d vic_db -c "CREATE SCHEMA IF NOT EXISTS vmtrans"
 echo Loading ptv.ptv_metro_bus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_route.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_BUS_ROUTE.shp" "ptv.ptv_metro_bus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_route.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_BUS_ROUTE.shp" "ptv.ptv_metro_bus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_route.log"
 echo Finished loading ptv.ptv_metro_bus_route
 echo Finished loading ptv.ptv_metro_bus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_route.log"
 echo Loading ptv.ptv_metro_bus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_stop.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_BUS_STOP.shp" "ptv.ptv_metro_bus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_stop.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_BUS_STOP.shp" "ptv.ptv_metro_bus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_stop.log"
 echo Finished loading ptv.ptv_metro_bus_stop
 echo Finished loading ptv.ptv_metro_bus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_bus_stop.log"
 echo Loading ptv.ptv_metro_train_station >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_train_station.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAIN_STATION.shp" "ptv.ptv_metro_train_station" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_train_station.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAIN_STATION.shp" "ptv.ptv_metro_train_station" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_train_station.log"
 echo Finished loading ptv.ptv_metro_train_station
 echo Finished loading ptv.ptv_metro_train_station >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_train_station.log"
 echo Loading ptv.ptv_metro_tram_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_route.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAM_ROUTE.shp" "ptv.ptv_metro_tram_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_route.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAM_ROUTE.shp" "ptv.ptv_metro_tram_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_route.log"
 echo Finished loading ptv.ptv_metro_tram_route
 echo Finished loading ptv.ptv_metro_tram_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_route.log"
 echo Loading ptv.ptv_metro_tram_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_stop.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAM_STOP.shp" "ptv.ptv_metro_tram_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_stop.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_METRO_TRAM_STOP.shp" "ptv.ptv_metro_tram_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_stop.log"
 echo Finished loading ptv.ptv_metro_tram_stop
 echo Finished loading ptv.ptv_metro_tram_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_metro_tram_stop.log"
 echo Loading ptv.ptv_regional_bus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_route.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_BUS_ROUTE.shp" "ptv.ptv_regional_bus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_route.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_BUS_ROUTE.shp" "ptv.ptv_regional_bus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_route.log"
 echo Finished loading ptv.ptv_regional_bus_route
 echo Finished loading ptv.ptv_regional_bus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_route.log"
 echo Loading ptv.ptv_regional_bus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_stop.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_BUS_STOP.shp" "ptv.ptv_regional_bus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_stop.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_BUS_STOP.shp" "ptv.ptv_regional_bus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_stop.log"
 echo Finished loading ptv.ptv_regional_bus_stop
 echo Finished loading ptv.ptv_regional_bus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_bus_stop.log"
 echo Loading ptv.ptv_regional_coach_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_route.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_COACH_ROUTE.shp" "ptv.ptv_regional_coach_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_route.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_COACH_ROUTE.shp" "ptv.ptv_regional_coach_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_route.log"
 echo Finished loading ptv.ptv_regional_coach_route
 echo Finished loading ptv.ptv_regional_coach_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_route.log"
 echo Loading ptv.ptv_regional_coach_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_stop.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_COACH_STOP.shp" "ptv.ptv_regional_coach_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_stop.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_COACH_STOP.shp" "ptv.ptv_regional_coach_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_stop.log"
 echo Finished loading ptv.ptv_regional_coach_stop
 echo Finished loading ptv.ptv_regional_coach_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_coach_stop.log"
 echo Loading ptv.ptv_regional_train_station >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_train_station.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_TRAIN_STATION.shp" "ptv.ptv_regional_train_station" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_train_station.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_REGIONAL_TRAIN_STATION.shp" "ptv.ptv_regional_train_station" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_train_station.log"
 echo Finished loading ptv.ptv_regional_train_station
 echo Finished loading ptv.ptv_regional_train_station >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_regional_train_station.log"
 echo Loading ptv.ptv_skybus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_route.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_SKYBUS_ROUTE.shp" "ptv.ptv_skybus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_route.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_SKYBUS_ROUTE.shp" "ptv.ptv_skybus_route" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_route.log"
 echo Finished loading ptv.ptv_skybus_route
 echo Finished loading ptv.ptv_skybus_route >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_route.log"
 echo Loading ptv.ptv_skybus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_stop.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_SKYBUS_STOP.shp" "ptv.ptv_skybus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_stop.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_SKYBUS_STOP.shp" "ptv.ptv_skybus_stop" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_stop.log"
 echo Finished loading ptv.ptv_skybus_stop
 echo Finished loading ptv.ptv_skybus_stop >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_skybus_stop.log"
 echo Loading ptv.ptv_train_carpark >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_carpark.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_CARPARK.shp" "ptv.ptv_train_carpark" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_carpark.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_CARPARK.shp" "ptv.ptv_train_carpark" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_carpark.log"
 echo Finished loading ptv.ptv_train_carpark
 echo Finished loading ptv.ptv_train_carpark >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_carpark.log"
 echo Loading ptv.ptv_train_corridor_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_corridor_centreline.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_CORRIDOR_CENTRELINE.shp" "ptv.ptv_train_corridor_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_corridor_centreline.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_CORRIDOR_CENTRELINE.shp" "ptv.ptv_train_corridor_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_corridor_centreline.log"
 echo Finished loading ptv.ptv_train_corridor_centreline
 echo Finished loading ptv.ptv_train_corridor_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_corridor_centreline.log"
 echo Loading ptv.ptv_train_station_bike_storage >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_bike_storage.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_STATION_BIKE_STORAGE.shp" "ptv.ptv_train_station_bike_storage" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_bike_storage.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_STATION_BIKE_STORAGE.shp" "ptv.ptv_train_station_bike_storage" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_bike_storage.log"
 echo Finished loading ptv.ptv_train_station_bike_storage
 echo Finished loading ptv.ptv_train_station_bike_storage >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_bike_storage.log"
 echo Loading ptv.ptv_train_station_platform >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_platform.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_STATION_PLATFORM.shp" "ptv.ptv_train_station_platform" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_platform.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_STATION_PLATFORM.shp" "ptv.ptv_train_station_platform" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_platform.log"
 echo Finished loading ptv.ptv_train_station_platform
 echo Finished loading ptv.ptv_train_station_platform >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_station_platform.log"
 echo Loading ptv.ptv_train_track_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_track_centreline.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_TRACK_CENTRELINE.shp" "ptv.ptv_train_track_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_track_centreline.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAIN_TRACK_CENTRELINE.shp" "ptv.ptv_train_track_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_track_centreline.log"
 echo Finished loading ptv.ptv_train_track_centreline
 echo Finished loading ptv.ptv_train_track_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_train_track_centreline.log"
 echo Loading ptv.ptv_tram_track_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_tram_track_centreline.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAM_TRACK_CENTRELINE.shp" "ptv.ptv_tram_track_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_tram_track_centreline.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\PTV\PTV_TRAM_TRACK_CENTRELINE.shp" "ptv.ptv_tram_track_centreline" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_tram_track_centreline.log"
 echo Finished loading ptv.ptv_tram_track_centreline
 echo Finished loading ptv.ptv_tram_track_centreline >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\ptv.ptv_tram_track_centreline.log"
 echo Loading vmadd.address >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMADD\ADDRESS.shp" "vmadd.address" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMADD\ADDRESS.shp" "vmadd.address" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address.log"
 echo Finished loading vmadd.address
 echo Finished loading vmadd.address >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address.log"
 echo Loading vmadd.address_1 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address_1.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMADD\ADDRESS_1.shp" "vmadd.address_1" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address_1.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMADD\ADDRESS_1.shp" "vmadd.address_1" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address_1.log"
 echo Finished loading vmadd.address_1
 echo Finished loading vmadd.address_1 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmadd.address_1.log"
 echo Loading vmprop.property >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmprop.property.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMPROP\PROPERTY.dbf" "vmprop.property" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmprop.property.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMPROP\PROPERTY.dbf" "vmprop.property" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmprop.property.log"
 echo Finished loading vmprop.property
 echo Finished loading vmprop.property >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmprop.property.log"
 echo Loading vmtrans.tr_road_all >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_all.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_ALL.shp" "vmtrans.tr_road_all" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_all.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_ALL.shp" "vmtrans.tr_road_all" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_all.log"
 echo Finished loading vmtrans.tr_road_all
 echo Finished loading vmtrans.tr_road_all >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_all.log"
 echo Loading vmtrans.tr_road_infrastructure_all >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_infrastructure_all.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_INFRASTRUCTURE_ALL.shp" "vmtrans.tr_road_infrastructure_all" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_infrastructure_all.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_INFRASTRUCTURE_ALL.shp" "vmtrans.tr_road_infrastructure_all" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_infrastructure_all.log"
 echo Finished loading vmtrans.tr_road_infrastructure_all
 echo Finished loading vmtrans.tr_road_infrastructure_all >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_infrastructure_all.log"
 echo Loading vmtrans.tr_road_register >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_register.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_REGISTER.shp" "vmtrans.tr_road_register" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_register.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_REGISTER.shp" "vmtrans.tr_road_register" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_register.log"
 echo Finished loading vmtrans.tr_road_register
 echo Finished loading vmtrans.tr_road_register >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_register.log"
 echo Loading vmtrans.tr_road_locality >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_LOCALITY.dbf" "vmtrans.tr_road_locality" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_LOCALITY.dbf" "vmtrans.tr_road_locality" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality.log"
 echo Finished loading vmtrans.tr_road_locality
 echo Finished loading vmtrans.tr_road_locality >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality.log"
 echo Loading vmtrans.tr_road_locality_section >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality_section.log"
-shp2pgsql -S -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_LOCALITY_SECTION.dbf" "vmtrans.tr_road_locality_section" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality_section.log"
+shp2pgsql -s 7844 "C:\Users\An\Documents\GitHub\vic_db\local\datashare\data\VMTRANS\TR_ROAD_LOCALITY_SECTION.dbf" "vmtrans.tr_road_locality_section" | psql -d vic_db -U postgres -h localhost -p 5432 >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality_section.log"
 echo Finished loading vmtrans.tr_road_locality_section
 echo Finished loading vmtrans.tr_road_locality_section >> "C:\Users\An\Documents\GitHub\vic_db\local\logs\vic_db\vmtrans.tr_road_locality_section.log"
 psql -U postgres -h localhost -p 5432 -d vic_db -c "ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN numofstops TO num_of_stops; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN triphdsign TO trip_headsign; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN routelongn TO route_long_name; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN lastspname TO last_stop_name; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN laststid TO last_stop_id; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN firststnam TO first_stop_name; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN operator TO operator_name; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN firstspid TO first_stop_id; ALTER TABLE ptv.ptv_metro_bus_route RENAME COLUMN routeshtnm TO route_short_name;"
