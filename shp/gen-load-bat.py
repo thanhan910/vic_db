@@ -35,7 +35,7 @@ if __name__ == '__main__':
     LOG_DIR = '../local/logs/vic_db' 
     LOG_DIR = os.path.join(os.path.dirname(__file__), LOG_DIR)
     os.makedirs(LOG_DIR, exist_ok=True)
-    DATA_DIR = '../local/datashare/data'
+    DATA_DIR = '../local/data/shp'
     DATA_DIR = os.path.join(os.path.dirname(__file__), DATA_DIR)
 
 
@@ -64,10 +64,13 @@ if __name__ == '__main__':
                 column_names_txt = f'address_column_names.txt'
 
             column_names_txt_path = os.path.join(DATA_DIR, dirname, column_names_txt)
-            with open(column_names_txt_path) as f:
-                shp_column_names = [line.strip() for line in f.readlines()][4:]
-                shp_column_names = { line.split(' = ')[0]: line.split(' = ')[1] for line in shp_column_names }
-
+            if os.path.exists(column_names_txt_path):    
+                with open(column_names_txt_path) as f:
+                    shp_column_names = [line.strip() for line in f.readlines()][4:]
+                    shp_column_names = { line.split(' = ')[0]: line.split(' = ')[1] for line in shp_column_names }
+            else:
+                shp_column_names = {}
+                
             TABLES.append((schema_name, table_name, filepath, shp_column_names))
 
 

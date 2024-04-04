@@ -1,9 +1,11 @@
+# Load SHP files to PostgreSQL
+
 ## How to use this program
 
-First, get the datasets from datashare.vic.gov.au, extract them, and put them in the ../local/datashare/data directory. Make sure that in the data directory, the structure is as follows:
+First, get the shp datasets from datashare.vic.gov.au, ABS,..., extract them, and put them in the ../local/data/shp directory. Make sure that in the data directory, the structure is as follows:
 
 ```
-../local/datashare/data/<dirname>/<shapefilename>.shp
+../local/data/shp/<dirname>/<shapefilename>.shp
 ```
 
 With the format above, the program will assume that the shapefilename is the name of the table, and the dirname is the schema name. If you want to change the format above, you can do so by editing the gen-load-bat.py file.

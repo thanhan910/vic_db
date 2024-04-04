@@ -1,4 +1,4 @@
-# Manual
+# Manuals
 
 ## How to import an SHP file to a PostgreSQL database
 
