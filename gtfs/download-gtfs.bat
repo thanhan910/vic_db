@@ -1,0 +1,1 @@
+powershell .\download-gtfs.ps1
