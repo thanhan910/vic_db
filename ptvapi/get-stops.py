@@ -5,8 +5,10 @@ from pymongo import MongoClient
 from requests.exceptions import HTTPError
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 from pyptvdata.apiv3 import PTVAPI3
+from pyptvdata.gtfs import read_gtfs_zip
 
 # import pandas as pd
 # import folium
@@ -254,3 +256,161 @@ PTV_DB['stops'].insert_many(all_stops)
 
 
 new_stops = complete_stops_info(all_directions_stops)
+
+# ----------------------------------------------------
+# Compare the collected stops from the API with the stops in the GTFS dataset, and get the information of GTFS stops with missing API information.
+# ----------------------------------------------------
+
+
+# 1min - 1min 30s
+GTFS_PTV = read_gtfs_zip()
+# 1min - 1min 30s
+
+# Assert that all stop_ids in stop_times are in stops
+for mode_id in GTFS_PTV:
+    stop_times_ids = GTFS_PTV[mode_id]['stop_times']['stop_id'].unique()
+    stops_ids = GTFS_PTV[mode_id]['stops']['stop_id'].unique()
+    assert len(set(stop_times_ids) - set(stops_ids)) == 0, mode_id
+
+
+
+for mode_id in GTFS_PTV:
+    GTFS_PTV[mode_id]['stops']['mode_id'] = mode_id
+gtfs_stops_df = pd.concat([GTFS_PTV[mode_id]['stops'] for mode_id in GTFS_PTV], ignore_index=True)
+gtfs_stops_uid_df = gtfs_stops_df.groupby('stop_id').agg({'stop_name': 'unique', 'stop_lat': 'unique', 'stop_lon': 'unique', 'mode_id': 'unique'}).reset_index()
+
+
+
+pipeline = [
+    {
+        '$match': {
+            'error': {'$exists': False}
+        }
+    },
+    {
+        '$project': {
+            'gtfs_stop_id' : '$stop.point_id',
+            'api_mode_id' : '$stop.mode_id',
+            'api_stop_id' : '$stop.stop_id',
+            'api_route_type' : '$stop.route_type',
+            'api_latitude' : '$stop.stop_location.gps.latitude',
+            'api_longitude' : '$stop.stop_location.gps.longitude',
+            'api_stop_name' : '$stop.stop_name',
+            'api_stop_name_primary' : '$stop.stop_location.primary_stop_name',
+            'api_road_type_primary' : '$stop.stop_location.road_type_primary',
+            'api_stop_name_second' : '$stop.stop_location.second_stop_name',
+            'api_road_type_second' : '$stop.stop_location.road_type_second',
+            'api_bay_nbr' : '$stop.stop_location.bay_nbr',
+            'api_postcode' : '$stop.stop_location.postcode',
+            'api_municipality' : '$stop.stop_location.municipality',
+            'api_municipality_id' : '$stop.stop_location.municipality_id',
+            'api_stop_landmark' : '$stop.stop_landmark',
+            'api_suburb' : '$stop.stop_location.suburb',
+        }
+    }
+]
+
+api_stops_list = list(PTV_DB['stops'].aggregate(pipeline))
+api_stops_df = pd.DataFrame(api_stops_list)
+api_stops_df.drop(columns=['_id'], inplace=True)
+api_stops_df['api_mode_id'] = api_stops_df['api_mode_id'].astype(str)
+api_stops_df['api_stop_id'] = api_stops_df['api_stop_id'].astype(str)
+api_stops_df['gtfs_stop_id'] = api_stops_df['gtfs_stop_id'].astype(str)
+assert api_stops_df['gtfs_stop_id'].is_unique
+stops_uid_df = pd.merge(gtfs_stops_uid_df, api_stops_df, left_on='stop_id', right_on='gtfs_stop_id', how='outer', suffixes=('_gtfs', '_api'))
+
+
+gtfs_no_api_list = stops_uid_df[stops_uid_df['api_stop_id'].isna()][['stop_id', 'mode_id']].to_dict('records')
+
+
+def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
+
+    MODE_ID_ROUTE_TYPES = {
+        '1': [3, 0, 1, 2],
+        '2': [0, 3, 1, 2],
+        '3': [1, 2, 3, 0],
+        '4': [2, 3, 1, 0],
+        '5': [3, 2, 1, 0],
+        '6': [0, 1, 2, 3],
+        '7': [2, 3, 1, 4],
+        '8': [4, 2, 3, 1],
+        '10': [0, 3, 1, 2],
+        '11': [2, 3, 0, 1],
+    }
+
+    gtfs_sid_rt = []
+    tqdm_count = 0
+    for gtfs_stop in gtfs_no_api_list:
+        gtfs_stop_id = gtfs_stop['stop_id']
+        gtfs_mode_ids = gtfs_stop['mode_id']
+        stop_route_types = set()
+        for mode_id in gtfs_mode_ids:
+            stop_route_types.update(MODE_ID_ROUTE_TYPES[mode_id])
+        stop_route_types = list(stop_route_types)
+        gtfs_sid_rt.append((gtfs_stop_id, stop_route_types))
+        tqdm_count += len(stop_route_types)
+
+    all_stops = []
+
+    # with tqdm(total=len(all_stops_idrt), desc="Getting stops information") as pbar:
+    with tqdm(total=tqdm_count) as pbar:
+        for gtfs_stop, route_types in gtfs_sid_rt:
+            for route_type in route_types:  
+                _id_mongo = f"gtfs.{gtfs_stop_id}.{route_type}"
+                if save_to_mongo:
+                    stop_info = PTV_DB['stops'].find_one({'_id': _id_mongo})
+                    if stop_info:
+                        # stop_info = PTV_DB['stops'].find_one({'_id': _id_mongo})
+                        all_stops.append(stop_info)
+                        pbar.update(1)
+                        continue
+                while True:
+                    try:
+                        stop_info = PTV_API_CLIENT.get_stop_info(
+                            stop_id = gtfs_stop_id, 
+                            route_type = route_type, 
+                            gtfs = True,
+                            stop_location = True,
+                            stop_amenities = True,
+                            stop_accessibility = True,
+                            stop_contact = True,
+                            stop_ticket = True,
+                            stop_staffing = True,
+                            stop_disruptions = True
+                        )
+                        break
+                    except HTTPError as e:
+                        if e.response.status_code == 403:
+                            print("Rate limit exceeded. Sleeping for 30 seconds...")
+                            time.sleep(30)
+                        else:
+                            # print(f"Stop {gtfs_stop_id} at route type {route_type} not found")
+                            stop_info = {
+                                'gtfs_stop_id': gtfs_stop_id,
+                                'route_type': route_type,
+                                'error': str(e)
+                            }
+                            break
+                        # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
+                        # pbar.set_postfix_str(str(e))
+                        # Print, but keep the progress bar running cleanly
+
+                
+                stop_info['_id'] = _id_mongo
+                
+                all_stops.append(stop_info)
+
+                if save_to_mongo:
+                    if not PTV_DB['stops'].find_one({'_id': stop_info['_id']}):
+                        PTV_DB['stops'].insert_one(stop_info)
+                    else:
+                        obj = PTV_DB['stops'].find_one({'_id': stop_info['_id']})
+                        if 'error' in obj:
+                            PTV_DB['stops'].delete_one({'_id': stop_info['_id']})
+                            PTV_DB['stops'].insert_one(stop_info)
+
+                pbar.update(1)
+        
+    return all_stops
+
+all_stops = get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True)
