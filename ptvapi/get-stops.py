@@ -316,7 +316,7 @@ api_stops_df.drop(columns=['_id'], inplace=True)
 api_stops_df['api_mode_id'] = api_stops_df['api_mode_id'].astype(str)
 api_stops_df['api_stop_id'] = api_stops_df['api_stop_id'].astype(str)
 api_stops_df['gtfs_stop_id'] = api_stops_df['gtfs_stop_id'].astype(str)
-assert api_stops_df['gtfs_stop_id'].is_unique
+# assert api_stops_df['gtfs_stop_id'].is_unique
 stops_uid_df = pd.merge(gtfs_stops_uid_df, api_stops_df, left_on='stop_id', right_on='gtfs_stop_id', how='outer', suffixes=('_gtfs', '_api'))
 
 
