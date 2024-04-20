@@ -312,11 +312,12 @@ pipeline = [
 
 api_stops_list = list(PTV_DB['stops'].aggregate(pipeline))
 api_stops_df = pd.DataFrame(api_stops_list)
-api_stops_df.drop(columns=['_id'], inplace=True)
+
 api_stops_df['api_mode_id'] = api_stops_df['api_mode_id'].astype(str)
 api_stops_df['api_stop_id'] = api_stops_df['api_stop_id'].astype(str)
-api_stops_df['gtfs_stop_id'] = api_stops_df['gtfs_stop_id'].astype(str)
-# assert api_stops_df['gtfs_stop_id'].is_unique
+
+api_stops_df['gtfs_stop_id'] = api_stops_df.apply(lambda x: x['_id'].split('.')[1] if 'gtfs.' in x['_id'] else str(int(x['api_point_id'])), axis=1)
+
 stops_uid_df = pd.merge(gtfs_stops_uid_df, api_stops_df, left_on='stop_id', right_on='gtfs_stop_id', how='outer', suffixes=('_gtfs', '_api'))
 
 
@@ -354,14 +355,14 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
 
     # with tqdm(total=len(all_stops_idrt), desc="Getting stops information") as pbar:
     with tqdm(total=tqdm_count) as pbar:
-        for gtfs_stop, route_types in gtfs_sid_rt:
+        for gtfs_stop_id, route_types in gtfs_sid_rt:
             for route_type in route_types:  
                 _id_mongo = f"gtfs.{gtfs_stop_id}.{route_type}"
                 if save_to_mongo:
                     stop_info = PTV_DB['stops'].find_one({'_id': _id_mongo})
                     if stop_info:
                         # stop_info = PTV_DB['stops'].find_one({'_id': _id_mongo})
-                        all_stops.append(stop_info)
+                        # all_stops.append(stop_info)
                         pbar.update(1)
                         continue
                 while True:
@@ -381,7 +382,7 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
                         break
                     except HTTPError as e:
                         if e.response.status_code == 403:
-                            print("Rate limit exceeded. Sleeping for 30 seconds...")
+                            tqdm.write("Rate limit exceeded. Sleeping for 30 seconds...")
                             time.sleep(30)
                         else:
                             # print(f"Stop {gtfs_stop_id} at route type {route_type} not found")
