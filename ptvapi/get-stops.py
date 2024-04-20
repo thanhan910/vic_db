@@ -228,107 +228,6 @@ def complete_stops_info(all_directions_stops):
     return new_stops
 
 
-
-
-# Collect all routes, directions and stops from PTV API
-PTV_DB['routes'].drop()
-
-all_routes = PTV_API_CLIENT.get_all_routes()
-for route in all_routes:
-    route['_id'] = route['route_id']
-
-PTV_DB['routes'].insert_many(all_routes)
-
-
-# Get all directions and stops information of all routes
-all_directions = get_all_directions()
-all_directions_stops = get_all_directions_stops(all_directions)
-PTV_DB['directions_stops'].drop()
-PTV_DB['directions_stops'].insert_many(all_directions_stops)
-
-
-# Get all stops information
-all_stops_idrt = [(stop['stop_id'], stop['route_type']) for direction in all_directions_stops for stop in direction['stops']]
-all_stops_idrt = list(set(all_stops_idrt))
-PTV_DB['stops'].drop()
-all_stops = get_all_stops_info(all_stops_idrt)
-PTV_DB['stops'].insert_many(all_stops)
-
-
-new_stops = complete_stops_info(all_directions_stops)
-
-# ----------------------------------------------------
-# Compare the collected stops from the API with the stops in the GTFS dataset, and get the information of GTFS stops with missing API information.
-# ----------------------------------------------------
-
-
-# 1min - 1min 30s
-GTFS_PTV = read_gtfs_zip()
-# 1min - 1min 30s
-
-# Assert that all stop_ids in stop_times are in stops
-for mode_id in GTFS_PTV:
-    stop_times_ids = GTFS_PTV[mode_id]['stop_times']['stop_id'].unique()
-    stops_ids = GTFS_PTV[mode_id]['stops']['stop_id'].unique()
-    assert len(set(stop_times_ids) - set(stops_ids)) == 0, mode_id
-
-
-
-for mode_id in GTFS_PTV:
-    GTFS_PTV[mode_id]['stops']['mode_id'] = mode_id
-gtfs_stops_df = pd.concat([GTFS_PTV[mode_id]['stops'] for mode_id in GTFS_PTV], ignore_index=True)
-gtfs_stops_uid_df = gtfs_stops_df.groupby('stop_id').agg({'stop_name': 'unique', 'stop_lat': 'unique', 'stop_lon': 'unique', 'mode_id': 'unique'}).reset_index()
-
-
-
-
-pipeline = [
-    {
-        '$match': {
-            '$or': [
-                # {'_id': {'$regex': 'gtfs'}},
-                {'error': {'$exists': False}}
-            ]
-        }
-    },
-    {
-        '$project': {
-            '_id': 1,
-            'api_point_id' : '$stop.point_id',
-            'api_mode_id' : '$stop.mode_id',
-            'api_stop_id' : '$stop.stop_id',
-            'api_route_type' : '$stop.route_type',
-            'api_latitude' : '$stop.stop_location.gps.latitude',
-            'api_longitude' : '$stop.stop_location.gps.longitude',
-            'api_stop_name' : '$stop.stop_name',
-            'api_stop_name_primary' : '$stop.stop_location.primary_stop_name',
-            'api_road_type_primary' : '$stop.stop_location.road_type_primary',
-            'api_stop_name_second' : '$stop.stop_location.second_stop_name',
-            'api_road_type_second' : '$stop.stop_location.road_type_second',
-            'api_bay_nbr' : '$stop.stop_location.bay_nbr',
-            'api_postcode' : '$stop.stop_location.postcode',
-            'api_municipality' : '$stop.stop_location.municipality',
-            'api_municipality_id' : '$stop.stop_location.municipality_id',
-            'api_stop_landmark' : '$stop.stop_landmark',
-            'api_suburb' : '$stop.stop_location.suburb',
-        }
-    }
-]
-
-api_stops_list = list(PTV_DB['stops'].aggregate(pipeline))
-api_stops_df = pd.DataFrame(api_stops_list)
-
-api_stops_df['api_mode_id'] = api_stops_df['api_mode_id'].astype(str)
-api_stops_df['api_stop_id'] = api_stops_df['api_stop_id'].astype(str)
-
-api_stops_df['gtfs_stop_id'] = api_stops_df.apply(lambda x: x['_id'].split('.')[1] if 'gtfs.' in x['_id'] else str(int(x['api_point_id'])), axis=1)
-
-stops_uid_df = pd.merge(gtfs_stops_uid_df, api_stops_df, left_on='stop_id', right_on='gtfs_stop_id', how='outer', suffixes=('_gtfs', '_api'))
-
-
-gtfs_no_api_list = stops_uid_df[stops_uid_df['api_stop_id'].isna()][['stop_id', 'mode_id']].to_dict('records')
-
-
 def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
 
     MODE_ID_ROUTE_TYPES = {
@@ -418,5 +317,106 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
                 pbar.update(1)
         
     return all_stops
+
+
+
+# Collect all routes, directions and stops from PTV API
+PTV_DB['routes'].drop()
+
+all_routes = PTV_API_CLIENT.get_all_routes()
+for route in all_routes:
+    route['_id'] = route['route_id']
+
+PTV_DB['routes'].insert_many(all_routes)
+
+
+# Get all directions and stops information of all routes
+all_directions = get_all_directions()
+all_directions_stops = get_all_directions_stops(all_directions)
+PTV_DB['directions_stops'].drop()
+PTV_DB['directions_stops'].insert_many(all_directions_stops)
+
+
+# Get all stops information
+all_stops_idrt = [(stop['stop_id'], stop['route_type']) for direction in all_directions_stops for stop in direction['stops']]
+all_stops_idrt = list(set(all_stops_idrt))
+PTV_DB['stops'].drop()
+all_stops = get_all_stops_info(all_stops_idrt)
+PTV_DB['stops'].insert_many(all_stops)
+
+
+new_stops = complete_stops_info(all_directions_stops)
+
+
+# ----------------------------------------------------
+# Compare the collected stops from the API with the stops in the GTFS dataset, and get the information of GTFS stops with missing API information.
+# ----------------------------------------------------
+
+
+# 1min - 1min 30s
+GTFS_PTV = read_gtfs_zip()
+# 1min - 1min 30s
+
+# Assert that all stop_ids in stop_times are in stops
+for mode_id in GTFS_PTV:
+    stop_times_ids = GTFS_PTV[mode_id]['stop_times']['stop_id'].unique()
+    stops_ids = GTFS_PTV[mode_id]['stops']['stop_id'].unique()
+    assert len(set(stop_times_ids) - set(stops_ids)) == 0, mode_id
+
+
+
+for mode_id in GTFS_PTV:
+    GTFS_PTV[mode_id]['stops']['mode_id'] = mode_id
+gtfs_stops_df = pd.concat([GTFS_PTV[mode_id]['stops'] for mode_id in GTFS_PTV], ignore_index=True)
+gtfs_stops_uid_df = gtfs_stops_df.groupby('stop_id').agg({'stop_name': 'unique', 'stop_lat': 'unique', 'stop_lon': 'unique', 'mode_id': 'unique'}).reset_index()
+
+
+
+pipeline = [
+    {
+        '$match': {
+            '$or': [
+                # {'_id': {'$regex': 'gtfs'}},
+                {'error': {'$exists': False}}
+            ]
+        }
+    },
+    {
+        '$project': {
+            '_id': 1,
+            'api_point_id' : '$stop.point_id',
+            'api_mode_id' : '$stop.mode_id',
+            'api_stop_id' : '$stop.stop_id',
+            'api_route_type' : '$stop.route_type',
+            'api_latitude' : '$stop.stop_location.gps.latitude',
+            'api_longitude' : '$stop.stop_location.gps.longitude',
+            'api_stop_name' : '$stop.stop_name',
+            'api_stop_name_primary' : '$stop.stop_location.primary_stop_name',
+            'api_road_type_primary' : '$stop.stop_location.road_type_primary',
+            'api_stop_name_second' : '$stop.stop_location.second_stop_name',
+            'api_road_type_second' : '$stop.stop_location.road_type_second',
+            'api_bay_nbr' : '$stop.stop_location.bay_nbr',
+            'api_postcode' : '$stop.stop_location.postcode',
+            'api_municipality' : '$stop.stop_location.municipality',
+            'api_municipality_id' : '$stop.stop_location.municipality_id',
+            'api_stop_landmark' : '$stop.stop_landmark',
+            'api_suburb' : '$stop.stop_location.suburb',
+        }
+    }
+]
+
+api_stops_list = list(PTV_DB['stops'].aggregate(pipeline))
+api_stops_df = pd.DataFrame(api_stops_list)
+
+api_stops_df['api_mode_id'] = api_stops_df['api_mode_id'].astype(str)
+api_stops_df['api_stop_id'] = api_stops_df['api_stop_id'].astype(str)
+
+api_stops_df['gtfs_stop_id'] = api_stops_df.apply(lambda x: x['_id'].split('.')[1] if 'gtfs.' in x['_id'] else str(int(x['api_point_id'])), axis=1)
+
+stops_uid_df = pd.merge(gtfs_stops_uid_df, api_stops_df, left_on='stop_id', right_on='gtfs_stop_id', how='outer', suffixes=('_gtfs', '_api'))
+
+
+gtfs_no_api_list = stops_uid_df[stops_uid_df['api_stop_id'].isna()][['stop_id', 'mode_id']].to_dict('records')
+
 
 all_stops = get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True)
