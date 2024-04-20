@@ -21,7 +21,7 @@ from pyptvdata.gtfs import read_gtfs_zip
 
 SESSION = requests.Session()
 
-MONGO_CLIENT = MongoClient()
+MONGO_CLIENT = MongoClient('mongodb://localhost:27017/')
 PTV_DB = MONGO_CLIENT['ptv']
 
 ENV = json.load(open('../local-env.json'))
@@ -47,6 +47,11 @@ def get_all_directions():
                         print(e)
                     # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                     # pbar.set_postfix_str(str(e))
+                except Exception as e:
+                    print(e)
+                    print("Resetting the connection in 30 seconds...")
+                    time.sleep(30)
+                    continue
             all_directions.extend(directions)
             pbar.update(1)        
     return all_directions
@@ -77,6 +82,11 @@ def get_all_directions_stops(all_directions : list[str, dict]):
                         print(e)
                     # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                     # pbar.set_postfix_str(str(e))
+                except Exception as e:
+                    print(e)
+                    print("Resetting the connection in 30 seconds...")
+                    time.sleep(30)
+                    continue
             direction_obj['stops'] = stops['stops']
             direction_obj['geopath'] = stops['geopath']
 
@@ -124,6 +134,11 @@ def get_all_stops_info(all_stops_idrt : list[tuple[int, int]], save_to_mongo=Tru
                             'error': str(e)
                         }
                         break
+                except Exception as e:
+                    print(e)
+                    print("Resetting the connection in 30 seconds...")
+                    time.sleep(30)
+                    continue
                     # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                     # pbar.set_postfix_str(str(e))
                     # Print, but keep the progress bar running cleanly
@@ -207,6 +222,11 @@ def complete_stops_info(all_directions_stops):
                         }
                         print('API', stop_id, route_type, e.response.status_code)
                         break
+                except Exception as e:
+                    print(e)
+                    print("Resetting the connection in 30 seconds...")
+                    time.sleep(30)
+                    continue
                 
             stop_info['_id'] = f"{stop_id}.{route_type}"
 
@@ -296,6 +316,11 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
                                 'error': str(e)
                             }
                             break
+                    except Exception as e:
+                        print(e)
+                        print("Resetting the connection in 30 seconds...")
+                        time.sleep(30)
+                        continue
                         # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                         # pbar.set_postfix_str(str(e))
                         # Print, but keep the progress bar running cleanly
