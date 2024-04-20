@@ -366,8 +366,7 @@ PTV_DB['directions_stops'].insert_many(all_directions_stops)
 all_stops_idrt = [(stop['stop_id'], stop['route_type']) for direction in all_directions_stops for stop in direction['stops']]
 all_stops_idrt = list(set(all_stops_idrt))
 PTV_DB['stops'].drop()
-all_stops = get_all_stops_info(all_stops_idrt)
-PTV_DB['stops'].insert_many(all_stops)
+all_stops = get_all_stops_info(all_stops_idrt, save_to_mongo=True)
 
 
 new_stops = complete_stops_info(all_directions_stops)
