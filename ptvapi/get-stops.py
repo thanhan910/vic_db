@@ -281,15 +281,20 @@ gtfs_stops_uid_df = gtfs_stops_df.groupby('stop_id').agg({'stop_name': 'unique',
 
 
 
+
 pipeline = [
     {
         '$match': {
-            'error': {'$exists': False}
+            '$or': [
+                # {'_id': {'$regex': 'gtfs'}},
+                {'error': {'$exists': False}}
+            ]
         }
     },
     {
         '$project': {
-            'gtfs_stop_id' : '$stop.point_id',
+            '_id': 1,
+            'api_point_id' : '$stop.point_id',
             'api_mode_id' : '$stop.mode_id',
             'api_stop_id' : '$stop.stop_id',
             'api_route_type' : '$stop.route_type',
