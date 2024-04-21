@@ -40,16 +40,16 @@ def get_all_directions():
                     break
                 except HTTPError as e:
                     if e.response.status_code == 403:
-                        print("Rate limit exceeded. Sleeping for 30 seconds...")
+                        tqdm.write("Rate limit exceeded. Sleeping for 30 seconds...")
                         time.sleep(30)
                     else:
-                        print(f"Error getting directions for route {route_id}")
-                        print(e)
+                        tqdm.write(f"Error getting directions for route {route_id}")
+                        tqdm.write(e)
                     # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                     # pbar.set_postfix_str(str(e))
                 except Exception as e:
-                    print(e)
-                    print("Resetting the connection in 30 seconds...")
+                    tqdm.write(e)
+                    tqdm.write("Resetting the connection in 30 seconds...")
                     time.sleep(30)
                     continue
             all_directions.extend(directions)
@@ -75,16 +75,16 @@ def get_all_directions_stops(all_directions : list[str, dict]):
                     break
                 except HTTPError as e:
                     if e.response.status_code == 403:
-                        print("Rate limit exceeded. Sleeping for 30 seconds...")
+                        tqdm.write("Rate limit exceeded. Sleeping for 30 seconds...")
                         time.sleep(30)
                     else:
-                        print(f"Error getting stops for route {route_id}, direction {direction_id}")
-                        print(e)
+                        tqdm.write(f"Error getting stops for route {route_id}, direction {direction_id}")
+                        tqdm.write(e)
                     # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
                     # pbar.set_postfix_str(str(e))
                 except Exception as e:
-                    print(e)
-                    print("Resetting the connection in 30 seconds...")
+                    tqdm.write(e)
+                    tqdm.write("Resetting the connection in 30 seconds...")
                     time.sleep(30)
                     continue
             direction_obj['stops'] = stops['stops']
@@ -124,10 +124,10 @@ def get_all_stops_info(all_stops_idrt : list[tuple[int, int]], save_to_mongo=Tru
                     break
                 except HTTPError as e:
                     if e.response.status_code == 403:
-                        print("Rate limit exceeded. Sleeping for 30 seconds...")
+                        tqdm.write("Rate limit exceeded. Sleeping for 30 seconds...")
                         time.sleep(30)
                     else:
-                        print(f"Stop {stop_id} at route type {route_type} not found")
+                        tqdm.write(f"Stop {stop_id} at route type {route_type} not found")
                         stop_info = {
                             'stop_id': stop_id,
                             'route_type': route_type,
@@ -135,13 +135,10 @@ def get_all_stops_info(all_stops_idrt : list[tuple[int, int]], save_to_mongo=Tru
                         }
                         break
                 except Exception as e:
-                    print(e)
-                    print("Resetting the connection in 30 seconds...")
+                    tqdm.write(e)
+                    tqdm.write("Resetting the connection in 30 seconds...")
                     time.sleep(30)
                     continue
-                    # pbar.set_postfix_str("Timeout. Sleeping for 30 seconds...")
-                    # pbar.set_postfix_str(str(e))
-                    # Print, but keep the progress bar running cleanly
 
             
             stop_info['_id'] = f"{stop_id}.{route_type}"
@@ -199,11 +196,11 @@ def complete_stops_info(all_directions_stops):
                     break
                 except HTTPError as e:
                     if e.response.status_code == 403:
-                        print("Website Timeout 30")
+                        tqdm.write("Website Timeout 30")
                         time.sleep(30)
                         continue
                     else:
-                        print('Website', stop_id, route_type, e.response.status_code)
+                        tqdm.write('Website', stop_id, route_type, e.response.status_code)
                         break
             while True:
                 try:
@@ -211,7 +208,7 @@ def complete_stops_info(all_directions_stops):
                     break
                 except HTTPError as e:
                     if e.response.status_code == 403:
-                        print("API Timeout 30")
+                        tqdm.write("API Timeout 30")
                         time.sleep(30)
                         continue
                     else:
@@ -220,11 +217,11 @@ def complete_stops_info(all_directions_stops):
                             'route_type': route_type,
                             'error': str(e)
                         }
-                        print('API', stop_id, route_type, e.response.status_code)
+                        tqdm.write('API', stop_id, route_type, e.response.status_code)
                         break
                 except Exception as e:
-                    print(e)
-                    print("Resetting the connection in 30 seconds...")
+                    tqdm.write(e)
+                    tqdm.write("Resetting the connection in 30 seconds...")
                     time.sleep(30)
                     continue
                 
