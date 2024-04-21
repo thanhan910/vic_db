@@ -105,7 +105,7 @@ def get_all_directions_stops(all_directions : list[str, dict]):
 def get_all_stops_info(all_stops_idrt : list[tuple[int, int]], save_to_mongo=True):
 
     all_stops = []
-    with tqdm(total=len(all_stops_idrt), desc="Getting stops information") as pbar:
+    with tqdm(total=len(all_stops_idrt), desc="Getting stops information by PTV API") as pbar:
         for stop_id, route_type in all_stops_idrt:    
             while True:
                 try:
@@ -188,7 +188,7 @@ def complete_stops_info(all_directions_stops):
 
     new_stops = []
 
-    with tqdm(total=len(odd_stops)) as pbar:
+    with tqdm(total=len(odd_stops), desc = "Get more stops info based on website") as pbar:
         for stop_id, route_type in odd_stops:
             while True:
                 try:
@@ -274,8 +274,8 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
 
     all_stops = []
 
-    # with tqdm(total=len(all_stops_idrt), desc="Getting stops information") as pbar:
-    with tqdm(total=tqdm_count) as pbar:
+
+    with tqdm(total=tqdm_count, desc="Get more stops info based on GTFS dataset") as pbar:
         for gtfs_stop_id, route_types in gtfs_sid_rt:
             for route_type in route_types:  
                 _id_mongo = f"gtfs.{gtfs_stop_id}.{route_type}"
@@ -339,6 +339,80 @@ def get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True):
                 pbar.update(1)
         
     return all_stops
+
+
+def complete_update_null_locations():
+    """
+    Search for stops with missing location information and update them. 
+
+    I have no idea why the stop_location field is missing in some stops.
+    """
+
+    info_missing_stops_list = [
+    stop
+    for stop in PTV_DB["stops"].find(
+            {
+                "$and": [
+                    {"error": {"$exists": False}},
+                    {
+                        "$or": [
+                            {"stop.stop_location": None},
+                            {"stop.stop_amenities": None},
+                            {"stop.stop_accessibility": None},
+                            {"stop.stop_contact": None},
+                            {"stop.stop_ticket": None},
+                            {"stop.stop_staffing": None},
+                        ]
+                    },
+                ]
+            }
+        )
+    ]
+
+    
+    with tqdm(total=len(info_missing_stops_list)) as pbar:
+        for stop in info_missing_stops_list:
+            document_id = stop["_id"]
+            stop_id = stop["stop"]["stop_id"]
+            route_type = stop["stop"]["route_type"]
+            pbar.set_description(f"Stop {stop_id}")
+            pbar.update(1)
+            while True:
+                try:
+                    stop_info = PTV_API_CLIENT.get_stop_info(
+                        stop_id=stop_id,
+                        route_type=route_type,
+                        gtfs = None,
+                        stop_location = True,
+                        stop_amenities = True,
+                        stop_accessibility = True,
+                        stop_contact = True,
+                        stop_ticket = True,
+                        stop_staffing = True,
+                        stop_disruptions = True
+                    )
+                    if stop_info['stop']['stop_location'] == None:
+                        tqdm.write(f"Stop {stop_id} has no location information. Retrying...")
+                        continue
+                    # Replace the existing document with the new one
+                    PTV_DB["stops"].replace_one(
+                        {"_id": document_id},
+                        stop_info,
+                    )
+                    tqdm.write(f"Stop {stop_id} updated.")
+                    break
+                except HTTPError as e:
+                    if e.response.status_code == 403 or e.response.status_code == 429:
+                        tqdm.write("API rate limit exceeded. Waiting 60 seconds...")
+                        time.sleep(60)
+                        continue
+                    else:
+                        tqdm.write(f"HTTPError: {e}")
+                        break
+                except Exception as e:
+                    tqdm.write(f"Error: {e}")
+                    tqdm.write(f"Stop {stop_id} failed. Retrying...")
+                    continue
 
 if __name__ == "__main__":
 
@@ -442,3 +516,6 @@ if __name__ == "__main__":
 
 
     all_stops = get_more_gtfs_stops_info(gtfs_no_api_list, save_to_mongo=True)
+
+    # Update stops with missing location information
+    complete_update_null_locations()
