@@ -41,8 +41,9 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
             correct_trips[trip_id] = {
                 'trip_id': trip_id,
                 'departure_time': trips_to_start_stop_record[trip_id]['departure_time'],
+                'arrival_end': departure_time,
                 'route_short_name': route_short_name,
-                'route_long_name': route_long_name
+                'route_long_name': route_long_name,
             }
 
     selected_trips_df = pd.DataFrame(correct_trips.values())
@@ -116,8 +117,7 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
     fig = go.Figure(data=departure_shapes, layout=layout)
 
     # Show plot
-    # fig.show()
-    fig.write_html(f'./{my_day_str}_{start_stop}_{end_stop}.html')
+
     return fig, selected_trips_df
 
 def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, pd.DataFrame]:
@@ -137,7 +137,7 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
     WHERE (stop_id = '{start_stop}' OR stop_id = '{end_stop}')
     AND {my_weekday_name} = '1'
     AND start_date <= '{my_day_str}'
-    AND end_date >= '{my_day_str}'    
+    AND end_date >= '{my_day_str}'
     ORDER BY departure_time ASC, stop_sequence ASC;
     '''
     )
@@ -156,8 +156,9 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
             correct_trips[trip_id] = {
                 'trip_id': trip_id,
                 'departure_time': trips_to_start_stop_record[trip_id]['departure_time'],
+                'arrival_end': departure_time,
                 'route_short_name': route_short_name,
-                'route_long_name': route_long_name
+                'route_long_name': route_long_name,
             }
 
     selected_trips_df = pd.DataFrame(correct_trips.values())
