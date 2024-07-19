@@ -272,5 +272,5 @@ if __name__ == '__main__':
         fig.write_html(f'{output_dir}/interval_{interval_value_in_minutes}.html')
         fig2.write_html(f'{output_dir}/timetable.html')
         departure_minutes_df.to_csv(f'{output_dir}/timetable.csv', index=False)
-        with open(f'{output_dir}/README.txt', 'w') as f:
+        with open(f'{output_dir}/README.md', 'w') as f:
             f.write(f'{start_stop_name} to {end_stop_name} on {my_day_str} for mode {mode_id}. ID: {start_stop} to {end_stop}.')
