@@ -46,6 +46,9 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
                 'route_long_name': route_long_name,
             }
 
+    if len(correct_trips) == 0:
+        return None, None
+
     selected_trips_df = pd.DataFrame(correct_trips.values())
 
     departure_info = selected_trips_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
@@ -161,6 +164,9 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
                 'route_long_name': route_long_name,
             }
 
+    if len(correct_trips) == 0:
+        return None, None
+
     selected_trips_df = pd.DataFrame(correct_trips.values())
 
     departure_info = selected_trips_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
@@ -249,9 +255,14 @@ if __name__ == '__main__':
     end_stop = '19843'
     mode_id = 2
     interval_value_in_minutes = 60
+    
     fig, departure_minutes_df = plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, CURSOR)
-    os.makedirs(f'./{my_day_str}_{start_stop}_{end_stop}', exist_ok=True)
-    fig.write_html(f'./{my_day_str}_{start_stop}_{end_stop}/interval_{interval_value_in_minutes}.html')
     fig2, departure_minutes_df_2 = plot_timetable_rectangles(start_stop, end_stop, my_day_str, mode_id, CURSOR)
-    fig2.write_html(f'./{my_day_str}_{start_stop}_{end_stop}/timetable.html')
-    departure_minutes_df.to_csv(f'./{my_day_str}_{start_stop}_{end_stop}/timetable.csv', index=False)
+
+    output_dir = f'./local/{my_day_str}_{start_stop}_{end_stop}/frequencies'
+    os.makedirs(output_dir, exist_ok=True)
+
+    if fig is not None and fig2 is not None and departure_minutes_df is not None and departure_minutes_df_2 is not None:
+        fig.write_html(f'{output_dir}/interval_{interval_value_in_minutes}.html')
+        fig2.write_html(f'{output_dir}/timetable.html')
+        departure_minutes_df.to_csv(f'{output_dir}/timetable.csv', index=False)
