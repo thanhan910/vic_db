@@ -14,32 +14,43 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
 
     CURSOR.execute(
     f'''
-    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
+    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.stop_times.trip_id, gtfs_{mode_id}.stop_times.stop_sequence, gtfs_{mode_id}.stop_times.stop_id, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
     FROM gtfs_{mode_id}.stop_times 
     JOIN gtfs_{mode_id}.trips USING (trip_id)
     JOIN gtfs_{mode_id}.routes USING (route_id)
     JOIN gtfs_{mode_id}.calendar USING (service_id)
-    WHERE 
-    stop_id = '{start_stop}'
-    AND trip_id IN(
-    SELECT DISTINCT trip_id
-    FROM gtfs_{mode_id}.stop_times
-    WHERE stop_id = '{end_stop}'
-    )
+    WHERE (stop_id = '{start_stop}' OR stop_id = '{end_stop}')
     AND {my_weekday_name} = '1'
     AND start_date <= '{my_day_str}'
-    AND end_date >= '{my_day_str}'
-    ORDER BY departure_time;
+    AND end_date >= '{my_day_str}'    
+    ORDER BY departure_time ASC, stop_sequence ASC;
     '''
     )
-    result_df = pd.DataFrame(CURSOR.fetchall(), columns=[desc[0] for desc in CURSOR.description])
-    departure_times = result_df['departure_time'].values
-    departure_info = result_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
+
+    potential_trips = CURSOR.fetchall()
+
+    trips_to_start_stop_record : dict[str, dict[str, str]] = {}
+    correct_trips : dict[str, str] = {}
+
+    for departure_time, trip_id, stop_sequence, stop_id, route_short_name, route_long_name in potential_trips:
+
+        if stop_id == start_stop:
+            trips_to_start_stop_record[trip_id] = {'departure_time': departure_time, 'stop_sequence': stop_sequence}
+
+        if stop_id == end_stop and trip_id in trips_to_start_stop_record and int(trips_to_start_stop_record[trip_id]['stop_sequence']) <= int(stop_sequence):
+            correct_trips[trip_id] = {
+                'trip_id': trip_id,
+                'departure_time': trips_to_start_stop_record[trip_id]['departure_time'],
+                'route_short_name': route_short_name,
+                'route_long_name': route_long_name
+            }
+
+    selected_trips_df = pd.DataFrame(correct_trips.values())
+
+    departure_info = selected_trips_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
     # sort departure_info by departure_time
     assert all(k.endswith(":00") for k in sorted(departure_info))
     departure_info = {k.removesuffix(":00"): departure_info[k] for k in sorted(departure_info)}
-
-
 
     departure_minutes : list[int] = []
 
@@ -107,7 +118,7 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
     # Show plot
     # fig.show()
     fig.write_html(f'./{my_day_str}_{start_stop}_{end_stop}.html')
-    return fig, result_df
+    return fig, selected_trips_df
 
 def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, pd.DataFrame]:
     """
@@ -118,27 +129,40 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
 
     CURSOR.execute(
     f'''
-    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
+    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.stop_times.trip_id, gtfs_{mode_id}.stop_times.stop_sequence, gtfs_{mode_id}.stop_times.stop_id, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
     FROM gtfs_{mode_id}.stop_times 
     JOIN gtfs_{mode_id}.trips USING (trip_id)
     JOIN gtfs_{mode_id}.routes USING (route_id)
     JOIN gtfs_{mode_id}.calendar USING (service_id)
-    WHERE 
-    stop_id = '{start_stop}'
-    AND trip_id IN(
-    SELECT DISTINCT trip_id
-    FROM gtfs_{mode_id}.stop_times
-    WHERE stop_id = '{end_stop}'
-    )
+    WHERE (stop_id = '{start_stop}' OR stop_id = '{end_stop}')
     AND {my_weekday_name} = '1'
     AND start_date <= '{my_day_str}'
-    AND end_date >= '{my_day_str}'
-    ORDER BY departure_time;
+    AND end_date >= '{my_day_str}'    
+    ORDER BY departure_time ASC, stop_sequence ASC;
     '''
     )
-    result_df = pd.DataFrame(CURSOR.fetchall(), columns=[desc[0] for desc in CURSOR.description])
-    departure_times = result_df['departure_time'].values
-    departure_info = result_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
+
+    potential_trips = CURSOR.fetchall()
+
+    trips_to_start_stop_record : dict[str, dict[str, str]] = {}
+    correct_trips : dict[str, str] = {}
+
+    for departure_time, trip_id, stop_sequence, stop_id, route_short_name, route_long_name in potential_trips:
+
+        if stop_id == start_stop:
+            trips_to_start_stop_record[trip_id] = {'departure_time': departure_time, 'stop_sequence': stop_sequence}
+
+        if stop_id == end_stop and trip_id in trips_to_start_stop_record and int(trips_to_start_stop_record[trip_id]['stop_sequence']) <= int(stop_sequence):
+            correct_trips[trip_id] = {
+                'trip_id': trip_id,
+                'departure_time': trips_to_start_stop_record[trip_id]['departure_time'],
+                'route_short_name': route_short_name,
+                'route_long_name': route_long_name
+            }
+
+    selected_trips_df = pd.DataFrame(correct_trips.values())
+
+    departure_info = selected_trips_df.groupby('departure_time')['route_short_name'].apply(lambda x: ', '.join(x)).to_dict()
     # sort departure_info by departure_time
     assert all(k.endswith(":00") for k in sorted(departure_info))
     departure_info = {k.removesuffix(":00"): departure_info[k] for k in sorted(departure_info)}
@@ -210,7 +234,7 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
     # Create figure
     fig = go.Figure(data=departure_shapes, layout=layout)
 
-    return fig, result_df
+    return fig, selected_trips_df
 
 
 if __name__ == '__main__':    
