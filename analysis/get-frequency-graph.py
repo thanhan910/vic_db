@@ -265,11 +265,11 @@ if __name__ == '__main__':
     end_stop_name = CURSOR.execute(f"SELECT stop_name FROM gtfs_{mode_id}.stops WHERE stop_id = '{end_stop}'")
     end_stop_name = CURSOR.fetchone()[0]
 
-    output_dir = f'./local/{my_day_str}_{start_stop}_{end_stop}/frequencies'
+    output_dir = f'./local/frequencies/{mode_id}-{my_day_str}-{start_stop}-{end_stop}'
     os.makedirs(output_dir, exist_ok=True)
 
     if fig is not None and fig2 is not None and departure_minutes_df is not None and departure_minutes_df_2 is not None:
-        fig.write_html(f'{output_dir}/interval_{interval_value_in_minutes}.html')
+        fig.write_html(f'{output_dir}/interval-{interval_value_in_minutes}.html')
         fig2.write_html(f'{output_dir}/timetable.html')
         departure_minutes_df.to_csv(f'{output_dir}/timetable.csv', index=False)
         with open(f'{output_dir}/README.md', 'w') as f:
