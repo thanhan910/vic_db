@@ -259,6 +259,12 @@ if __name__ == '__main__':
     fig, departure_minutes_df = plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, CURSOR)
     fig2, departure_minutes_df_2 = plot_timetable_rectangles(start_stop, end_stop, my_day_str, mode_id, CURSOR)
 
+    start_stop_name = CURSOR.execute(f"SELECT stop_name FROM gtfs_{mode_id}.stops WHERE stop_id = '{start_stop}'")
+    start_stop_name = CURSOR.fetchone()[0]
+
+    end_stop_name = CURSOR.execute(f"SELECT stop_name FROM gtfs_{mode_id}.stops WHERE stop_id = '{end_stop}'")
+    end_stop_name = CURSOR.fetchone()[0]
+
     output_dir = f'./local/{my_day_str}_{start_stop}_{end_stop}/frequencies'
     os.makedirs(output_dir, exist_ok=True)
 
@@ -266,3 +272,5 @@ if __name__ == '__main__':
         fig.write_html(f'{output_dir}/interval_{interval_value_in_minutes}.html')
         fig2.write_html(f'{output_dir}/timetable.html')
         departure_minutes_df.to_csv(f'{output_dir}/timetable.csv', index=False)
+        with open(f'{output_dir}/README.txt', 'w') as f:
+            f.write(f'{start_stop_name} to {end_stop_name} on {my_day_str} for mode {mode_id}. ID: {start_stop} to {end_stop}.')
