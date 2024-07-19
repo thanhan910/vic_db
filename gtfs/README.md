@@ -17,3 +17,5 @@ To download the gtfs.zip file AND extract it into a PostgreSQL database, run the
 ```powershell
 .\download-gtfs.ps1 -db
 ```
+
+The gtfs datafiles will be downloaded into the `../local/data/ptvgtfs/<datetime>` directory, where `<datetime>` is the current date and time in the format `YYYYMMDD_HHMMSS`.
