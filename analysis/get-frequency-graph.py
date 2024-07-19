@@ -5,7 +5,7 @@ import psycopg2
 from datetime import datetime, timedelta
 
 
-def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, mode_id: int, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, list[int]]:
+def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, mode_id: int, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, pd.DataFrame]:
     """
     Plot timetable rectangles
     """
@@ -14,7 +14,7 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
 
     CURSOR.execute(
     f'''
-    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name
+    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
     FROM gtfs_{mode_id}.stop_times 
     JOIN gtfs_{mode_id}.trips USING (trip_id)
     JOIN gtfs_{mode_id}.routes USING (route_id)
@@ -107,10 +107,9 @@ def plot_timetable_rectangles(start_stop: str, end_stop: str, my_day_str: str, m
     # Show plot
     # fig.show()
     fig.write_html(f'./{my_day_str}_{start_stop}_{end_stop}.html')
-    return fig, departure_minutes
+    return fig, result_df
 
-def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, list[int]]:
-
+def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, cursor: psycopg2.extensions.cursor) -> tuple[go.Figure, pd.DataFrame]:
     """
     Plot number of departures in each of an interval (e.g. 1 hour, 30 minutes, 15 minutes)
     """
@@ -119,7 +118,7 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
 
     CURSOR.execute(
     f'''
-    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name
+    SELECT gtfs_{mode_id}.stop_times.departure_time, gtfs_{mode_id}.routes.route_short_name, gtfs_{mode_id}.routes.route_long_name
     FROM gtfs_{mode_id}.stop_times 
     JOIN gtfs_{mode_id}.trips USING (trip_id)
     JOIN gtfs_{mode_id}.routes USING (route_id)
@@ -211,7 +210,7 @@ def plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interv
     # Create figure
     fig = go.Figure(data=departure_shapes, layout=layout)
 
-    return fig, departure_minutes
+    return fig, result_df
 
 
 if __name__ == '__main__':    
@@ -225,10 +224,9 @@ if __name__ == '__main__':
     end_stop = '19843'
     mode_id = 2
     interval_value_in_minutes = 60
-    fig, departure_minutes = plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, CURSOR)
+    fig, departure_minutes_df = plot_frequency_by_interval(my_day_str, start_stop, end_stop, mode_id, interval_value_in_minutes, CURSOR)
     os.makedirs(f'./{my_day_str}_{start_stop}_{end_stop}', exist_ok=True)
     fig.write_html(f'./{my_day_str}_{start_stop}_{end_stop}/interval_{interval_value_in_minutes}.html')
-    fig2, departure_minutes_2 = plot_timetable_rectangles(start_stop, end_stop, my_day_str, mode_id, CURSOR)
+    fig2, departure_minutes_df_2 = plot_timetable_rectangles(start_stop, end_stop, my_day_str, mode_id, CURSOR)
     fig2.write_html(f'./{my_day_str}_{start_stop}_{end_stop}/timetable.html')
-    with open(f'./{my_day_str}_{start_stop}_{end_stop}/departure_minutes.csv', 'w') as f:
-        f.write('\n'.join(map(str, departure_minutes)))
+    departure_minutes_df.to_csv(f'./{my_day_str}_{start_stop}_{end_stop}/timetable.csv', index=False)
