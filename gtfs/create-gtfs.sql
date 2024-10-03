@@ -63,6 +63,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -147,6 +148,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -231,6 +233,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -315,6 +318,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -399,6 +403,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -483,6 +488,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -567,6 +573,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -651,6 +658,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -735,6 +743,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
@@ -819,6 +828,7 @@ CREATE TABLE trips (
     shape_id TEXT,
     trip_headsign TEXT,
     direction_id TEXT,
+    block_id TEXT,
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
