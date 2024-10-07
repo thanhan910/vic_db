@@ -50,7 +50,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -73,7 +73,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -136,7 +136,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -159,7 +159,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -222,7 +222,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -245,7 +245,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -308,7 +308,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -331,7 +331,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -394,7 +394,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -417,7 +417,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -480,7 +480,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -503,7 +503,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -566,7 +566,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -589,7 +589,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -652,7 +652,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -675,7 +675,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -738,7 +738,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -761,7 +761,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
@@ -824,7 +824,7 @@ CREATE TABLE shapes (
     PRIMARY KEY (shape_id, shape_pt_sequence)
 );
 CREATE TABLE stops (
-    stop_id TEXT,
+    stop_id INT,
     stop_name TEXT,
     stop_lat DECIMAL,
     stop_lon DECIMAL,
@@ -847,7 +847,7 @@ CREATE TABLE stop_times (
     trip_id TEXT,
     arrival_time TEXT,
     departure_time TEXT,
-    stop_id TEXT,
+    stop_id INT,
     stop_sequence SMALLINT,
     stop_headsign TEXT,
     pickup_type SMALLINT,
