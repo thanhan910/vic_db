@@ -35,7 +35,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -63,7 +63,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -76,6 +76,6 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );

@@ -1,4 +1,3 @@
-
 DROP SCHEMA IF EXISTS gtfs_1 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_1;
 SET search_path TO gtfs_1;
@@ -39,7 +38,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -67,7 +66,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -80,11 +79,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_2 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_2;
 SET search_path TO gtfs_2;
@@ -125,7 +122,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -153,7 +150,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -166,11 +163,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_3 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_3;
 SET search_path TO gtfs_3;
@@ -211,7 +206,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -239,7 +234,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -252,11 +247,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_4 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_4;
 SET search_path TO gtfs_4;
@@ -297,7 +290,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -325,7 +318,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -338,11 +331,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_5 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_5;
 SET search_path TO gtfs_5;
@@ -383,7 +374,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -411,7 +402,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -424,11 +415,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_6 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_6;
 SET search_path TO gtfs_6;
@@ -469,7 +458,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -497,7 +486,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -510,11 +499,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_7 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_7;
 SET search_path TO gtfs_7;
@@ -555,7 +542,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -583,7 +570,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -596,11 +583,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_8 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_8;
 SET search_path TO gtfs_8;
@@ -641,7 +626,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -669,7 +654,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -682,11 +667,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_10 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_10;
 SET search_path TO gtfs_10;
@@ -727,7 +710,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -755,7 +738,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -768,11 +751,9 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
-
-
 DROP SCHEMA IF EXISTS gtfs_11 CASCADE;
 CREATE SCHEMA IF NOT EXISTS gtfs_11;
 SET search_path TO gtfs_11;
@@ -813,7 +794,7 @@ CREATE TABLE routes (
     route_color TEXT NULL,
     route_text_color TEXT NULL,
     PRIMARY KEY (route_id)
-    FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
+    -- FOREIGN KEY (agency_id) REFERENCES agency(agency_id)
 );
 CREATE TABLE shapes (
     shape_id TEXT,
@@ -841,7 +822,7 @@ CREATE TABLE trips (
     PRIMARY KEY (trip_id),
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
     FOREIGN KEY (service_id) REFERENCES calendar(service_id)
-    FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
+    -- FOREIGN KEY (shape_id) REFERENCES shapes(shape_id)
 );
 CREATE TABLE stop_times (
     trip_id TEXT,
@@ -854,7 +835,7 @@ CREATE TABLE stop_times (
     drop_off_type SMALLINT NULL,
     shape_dist_traveled DECIMAL NULL,
     PRIMARY KEY (trip_id, stop_sequence)
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
+    -- FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
+    -- FOREIGN KEY (stop_id) REFERENCES stops(stop_id)
 );
 
