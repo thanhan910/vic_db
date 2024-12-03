@@ -72,6 +72,11 @@ Write-Host "Time taken by the script: $time_taken"
 
 
 if ($db) {
+
+    # Run the gen-sql.ps1 script to generate the SQL script for creating GTFS tables
+    Write-Host "Generating SQL script to create GTFS tables..."
+    & "$script_folder\gen-sql.ps1"
+
     # Load the GTFS data into a PostgreSQL database
     Write-Host "Loading GTFS data into PostgreSQL database..."
 
@@ -96,6 +101,10 @@ if ($db) {
             psql -U postgres -d vic_db -c "\copy gtfs_$folderName.$fileNameWithoutExtension FROM '$($txt_file.FullName)' DELIMITER ',' CSV NULL '' HEADER;"
         }
     }
+
+    # Alter the tables using the alter-gtfs.sql script
+    Write-Host "Altering GTFS tables..."
+    psql -U postgres -d vic_db -f "alter-gtfs.sql"
 
     # Delete the extracted GTFS files
     Write-Host "Deleting extracted GTFS files..."
