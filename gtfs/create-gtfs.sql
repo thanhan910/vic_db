@@ -7,6 +7,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -91,6 +93,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -175,6 +179,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -259,6 +265,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -343,6 +351,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -427,6 +437,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -511,6 +523,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -595,6 +609,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -679,6 +695,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
@@ -763,6 +781,8 @@ CREATE TABLE agency (
     agency_url TEXT NULL,
     agency_timezone TEXT NULL,
     agency_lang TEXT NULL,
+    agency_phone TEXT NULL,
+    agency_fare_url TEXT NULL,
     PRIMARY KEY (agency_id)
 );
 CREATE TABLE calendar (
