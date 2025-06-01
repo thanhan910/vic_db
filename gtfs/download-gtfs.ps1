@@ -14,7 +14,8 @@ Write-Host "Script start time: $script_start_time"
 $script_folder = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 # Folder where the GTFS ZIP file will be saved
-$download_folder = Join-Path -Path $script_folder -ChildPath "..\local\data\ptvgtfs\$timestamp"
+# $download_folder = Join-Path -Path $script_folder -ChildPath "..\local\data\ptvgtfs\$timestamp"
+$download_folder = "C:\Temp\data\ptvgtfs\$timestamp"
 
 # Ensure the folder exists, create it if necessary
 if (-not (Test-Path -Path $download_folder)) {
